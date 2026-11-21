@@ -66,5 +66,3 @@ print(issue_refund("ORD-101", 1200, _confidence=0.96))
 print(issue_refund("ORD-7741", 6400, _confidence=0.62))
 ```
 
-## License
-MIT
