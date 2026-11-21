@@ -1,0 +1,59 @@
+=== DEMO OUTPUT ===
+1. Routine low-value refund (auto-approved):
+{'status': 'refunded', 'order_id': 'ORD-101', 'amount_inr': 1200}
+
+2. High-value + low-confidence refund (escalated & edited):
+{'status': 'refunded', 'order_id': 'ORD-7741', 'amount_inr': 3200}
+
+3. Audit log:
+[
+  {
+    "request": {
+      "protocol": "hep/0.1",
+      "escalation_id": "esc_20abcb31",
+      "agent_id": "support-refund-agent",
+      "trigger": {
+        "type": "confidence_and_policy",
+        "confidence": 0.62,
+        "threshold": 0.85,
+        "reasons": [
+          "Confidence 0.62 is below threshold 0.85",
+          "Refund amount exceeds \u20b95,000 auto-approval cap"
+        ]
+      },
+      "proposed_action": {
+        "tool": "issue_refund",
+        "arguments": {
+          "order_id": "ORD-7741",
+          "amount_inr": 6400
+        }
+      },
+      "interaction": {
+        "mode": "choose_or_edit",
+        "options": [],
+        "editable_fields": [
+          "amount_inr"
+        ]
+      },
+      "sla": {
+        "expires_at": "2026-11-21T15:45:50.290416Z",
+        "on_timeout": "deny"
+      }
+    },
+    "response": {
+      "protocol": "hep/0.1",
+      "escalation_id": "esc_20abcb31",
+      "decision": "edited_approve",
+      "selected_option": null,
+      "edited_arguments": {
+        "amount_inr": 3200
+      },
+      "reviewer": {
+        "id": "auto-reviewer",
+        "role": "automated"
+      },
+      "note": "Approved 50% goodwill refund"
+    },
+    "status": "approved"
+  }
+]

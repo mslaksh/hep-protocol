@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hep-protocol.dev/schemas/v0.1/escalation_request.schema.json",
+  "title": "EscalationRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "escalation_id", "agent_id", "trigger", "proposed_action", "interaction", "sla"],
+  "properties": {
+    "protocol": { "const": "hep/0.1" },
+    "escalation_id": { "type": "string", "minLength": 1 },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reasons"],
+      "properties": {
+        "type": { "enum": ["confidence", "policy", "confidence_and_policy", "explicit"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "threshold": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "reasons": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "proposed_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "arguments"],
+      "properties": {
+        "tool": { "type": "string", "minLength": 1 },
+        "arguments": { "type": "object" }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["approve_reject", "choose", "edit", "choose_or_edit"] },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "editable_fields": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sla": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expires_at", "on_timeout"],
+      "properties": {
+        "expires_at": { "type": "string", "format": "date-time" },
+        "on_timeout": { "enum": ["deny", "escalate_up", "proceed_with_flag"] }
+      }
+    }
+  }
+}

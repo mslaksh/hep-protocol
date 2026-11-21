@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hep-protocol.dev/schemas/v0.1/escalation_response.schema.json",
+  "title": "EscalationResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "escalation_id", "decision"],
+  "properties": {
+    "protocol": { "const": "hep/0.1" },
+    "escalation_id": { "type": "string", "minLength": 1 },
+    "decision": { "enum": ["approve", "edited_approve", "reject", "timed_out"] },
+    "selected_option": { "type": ["string", "null"] },
+    "edited_arguments": { "type": ["object", "null"] },
+    "reviewer": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    },
+    "note": { "type": ["string", "null"] }
+  }
+}
